@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Background Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #myDiv {
+            width: 400px;
+            height: 250px;
+            background-image: url('so.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin: auto;
+            transition: background-image 0.5s ease-in-out;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="myDiv">Click to Change Background</div>
+    <button id="toggleButton">Toggle Background</button>
+
+    <script>
+        const myDiv = document.getElementById("myDiv");
+        const toggleButton = document.getElementById("toggleButton");
+
+        let isImageOne = true;
+
+        toggleButton.addEventListener("click", function () {
+            if (isImageOne) {
+                myDiv.style.backgroundImage = "url('so.jpg')";
+            } else {
+                myDiv.style.backgroundImage = "url('song.jpg')";
+            }
+            isImageOne = !isImageOne;
+        });
+    </script>
+
+</body>
+</html>

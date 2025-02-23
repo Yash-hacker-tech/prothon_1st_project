@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squid Game Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-image: url(Untitled\ design\ \(1\).png);
+            color: #ffffff; 
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .title_ele
+        {
+            font-size:43px;
+            text-align: center;
+            color: #fff;
+            text-shadow: 
+                1px 1px 10px #E84481,
+                2px 2px 15px #E84481,
+                3px 3px 20px #E84481,
+                4px 4px 25px #E84481;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+         h2 {
+            color: #fff;
+            text-shadow: 
+                1px 1px 10px #E84481,
+                2px 2px 15px #E84481,
+                3px 3px 20px #E84481,
+                4px 4px 25px #E84481; 
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .controls input, .controls select, .controls button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .controls input::placeholder {
+            color: #aaa;
+        }
+
+        .controls button {
+            background-color: #E84481;
+            color:#1a1a1a;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .controls button:hover {
+            background-color: #1a1a1a;
+            color:#fff;
+            text-shadow: 1px 1px 10px #E84481,
+            2px 2px 15px #E84481;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .participant {
+            padding: 15px;
+            border: 2px solid #444;
+            border-radius: 10px;
+            text-align: center;
+            background-color: #262626;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .participant:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .participant.alive {
+            background-color: #4CAF50; 
+        }
+
+        .participant.eliminated {
+            background-color: #ff4d4d;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9;
+        }
+
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            width: 300px;
+            text-align: center;
+            color: #fff;
+        }
+
+        #close-modal {
+            margin-top: 10px;
+            cursor: pointer;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #close-modal:hover {
+            background-color: #e60000;
+        }
+        canvas {
+            max-width: 100%;
+            margin: 20px auto;
+            background-color: #262626;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .stats {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .stats h2 {
+            margin: 10px 0;
+        }
+        .winner
+        {
+            font-size: 56px;
+            font-weight: 700;
+            text-align: center;
+            color: #fff;
+            text-shadow: 
+                1px 1px 10px #47e844,
+                2px 2px 15px #47e844;
+        }
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .controls input, .controls select, .controls button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
+        .head{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .head img{
+            height: 170px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body id="body_ele">
+    <div class="container">
+        <div class="head"><img src="Vector.svg" alt=""  ></div>
+        
+        <!-- <h1 class="title_ele">Squid Game Tracker</h1> -->
+
+        <div class="controls">
+            <input type="text" id="search" placeholder="Search by number">
+            <select id="filter-status">
+                <option value="all">All</option>
+                <option value="Alive">Alive</option>
+                <option value="Eliminated">Eliminated</option>
+            </select>
+            <input type="number" id="count" placeholder="Enter number to eliminate" min="1">
+            <button id="elim">Eliminate</button>
+            <button id="next-round">Next Round</button>
+        </div>
+
+        <div class="stats">
+            <h2>Round: <span id="round-counter">1</span></h2>
+            <h2>Players Remaining: <span id="remaining-players">456</span></h2>
+        </div>
+        <div class="winner"></div>
+        <canvas id="roundStatsChart"></canvas>
+
+        <div id="participants" class="grid"></div>
+    </div>
+
+    <div id="overlay"></div>
+
+    <div id="modal">
+        <div id="modal-content"></div>
+        <button id="close-modal">Close</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    const participantsContainer = document.getElementById("participants");
+    const searchInput = document.getElementById("search");
+    const filterSelect = document.getElementById("filter-status");
+    const modal = document.getElementById("modal");
+    const modalContent = document.getElementById("modal-content");
+    const closeModal = document.getElementById("close-modal");
+    const overlay = document.getElementById("overlay");
+    const count = document.getElementById("count");
+    const elim = document.getElementById("elim");
+    const roundCounter = document.getElementById("round-counter");
+    const remainingPlayers = document.getElementById("remaining-players");
+    const nextRoundButton = document.getElementById("next-round");
+    let winner = document.querySelector(".winner");
+
+    let round = 1;
+    let participants = [];
+    for (let i = 1; i <= 456; i++) {
+        participants.push({ 
+            id: i, 
+            status: "Alive",
+            roundsSurvived: 0
+        });
+    }
+
+    let roundData = [456];  
+    let roundLabels = ["Round 1"];
+
+    const ctx = document.getElementById('roundStatsChart').getContext('2d');
+    const survivalChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: roundLabels,
+            datasets: [{
+                label: 'Players Remaining',
+                data: roundData,
+                borderColor: 'yellow',
+                backgroundColor: 'rgba(255, 255, 0, 0.2)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            // scales: { y: { beginAtZero: true, max: 456 } }
+        }
+    });
+
+    function updateChart() {
+        let aliveCount = participants.filter(p => p.status === "Alive").length;
+        roundData.push(aliveCount);
+        roundLabels.push(`Round ${round}`);
+        survivalChart.update();
+    }
+
+    function eliminate(id) {
+        if (isNaN(id) || id < 1 || id > 456) {
+            alert("Please enter a valid player number between 1 and 456.");
+            return;
+        }
+
+        const participant = participants.find(p => p.id === id);
+        if (!participant) {
+            alert("Player not found.");
+            return;
+        }
+
+        if (participant.status === "Eliminated") {
+            alert("This player is already eliminated.");
+            return;
+        }
+
+        participant.status = "Eliminated";
+        renderParticipants();
+        updateChart();
+    }
+
+    function startNextRound() {
+        let alivePlayers = participants.filter(p => p.status === "Alive");
+        if (alivePlayers.length === 1) 
+        {
+            winner.innerHTML = `<span>Our winner is ${alivePlayers[0].id}</span>`;
+            return;
+        }
+
+        round++;
+        roundCounter.textContent = round;
+        let numToEliminate = Math.floor(alivePlayers.length * 0.3) + 1;
+        if (numToEliminate < 1) {
+            numToEliminate = 1;
+        }
+
+        for (let i = 0; i < numToEliminate; i++) {
+            let randomIndex = Math.floor(Math.random() * alivePlayers.length);
+            alivePlayers[randomIndex].status = "Eliminated";
+            alivePlayers.splice(randomIndex, 1);
+        }
+
+        participants.forEach(p => {
+            if (p.status === "Alive") p.roundsSurvived++;
+        });
+
+        updateChart();
+        renderParticipants();
+    }
+
+    function renderParticipants() {
+        participantsContainer.innerHTML = "";
+        remainingPlayers.textContent = participants.filter(p => p.status === "Alive").length;
+
+        for (let i = 0; i < participants.length; i++) {
+            let p = participants[i];
+
+            if (filterSelect.value !== "all" && p.status !== filterSelect.value) continue;
+            if (!p.id.toString().includes(searchInput.value)) continue;
+
+            const div = document.createElement("div");
+            div.classList.add("participant", p.status.toLowerCase());
+            div.innerHTML = `#${p.id} <br> Status: ${p.status}`;
+            participantsContainer.appendChild(div);
+
+            div.addEventListener("click", () => {
+                modalContent.innerHTML = `
+                    <span> Player ID: ${p.id}</span>
+                    <br><span> Status: ${p.status}</span>
+                    <br><span> Rounds survived: ${p.roundsSurvived}</span>`;
+                modal.style.display = "block";
+                overlay.style.display = "block";
+            });
+        }
+    }
+
+    elim.addEventListener("click", () => {
+        const id = parseInt(count.value);
+        if (!isNaN(id)) {
+            eliminate(id);
+        } else {
+            alert("Please enter a valid number.");
+        }
+    });
+
+    nextRoundButton.addEventListener("click", startNextRound);
+    searchInput.addEventListener("input", renderParticipants);
+    filterSelect.addEventListener("change", renderParticipants);
+    closeModal.addEventListener("click", () => { 
+        modal.style.display = "none"; 
+        overlay.style.display = "none"; 
+    });
+
+    renderParticipants();
+});
+    </script>
+</body>
+</html>

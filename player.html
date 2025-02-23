@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squid Game Player Search</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #111;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .player-card {
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 8px #E84481;
+            cursor: pointer;
+        }
+        .player-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px  #E84481;
+        }
+        .player-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .player-card:hover img {
+            transform: rotate(5deg) scale(1.1);
+        }
+        .backstory {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px  #E84481;
+            text-align: center;
+            color: white;
+            width: 60%;
+            z-index: 1000;
+        }
+        .close-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: #E84481;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        input {
+    margin: 10px;
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    font-size: 16px;
+    text-align: center;
+}
+
+input:focus {
+    outline: none;
+    border: 2px solid  #E84481;
+    box-shadow: 2px 2px 2px #E84481;
+}
+
+input.error {
+    border: 2px solid  #E84481;
+    border: 2px solid red;
+}
+
+small.error-message {
+    color: red;
+    font-size: 12px;
+    display: none;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Squid Game Player Search</h1>
+        <input type="text" id="search" placeholder="Search by player number or name...">
+        <div class="grid" id="playerGrid"></div>
+    </div>
+
+    <div class="backstory" id="backstory">
+        <h2 id="backstoryTitle"></h2>
+        <p id="backstoryText"></p>
+        <button class="close-btn" onclick="closeBackstory()">Close</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const playerGrid = document.getElementById("playerGrid");
+            const searchInput = document.getElementById("search");
+            const backstoryModal = document.getElementById("backstory");
+            const backstoryTitle = document.getElementById("backstoryTitle");
+            const backstoryText = document.getElementById("backstoryText");
+
+            async function fetchRandomImages(count) {
+                const response = await fetch(`https://randomuser.me/api/?results=${count}`);
+                const data = await response.json();
+                return data.results.map(user => user.picture.medium);
+            }
+
+            async function fetchBackstoryText() {
+                const stories = [
+                    "Grew up in the streets, struggling to make ends meet.",
+                    "Once a champion boxer, now drowning in debt.",
+                    "A former stockbroker who lost everything in a bad deal.",
+                    "A single parent fighting for a better future.",
+                    "A disgraced scientist trying to redeem themselves."
+                ];
+                return stories[Math.floor(Math.random() * stories.length)];
+            }
+
+            const images = await fetchRandomImages(456);
+            const players = Array.from({ length: 456 }, (_, i) => ({
+                number: i + 1,
+                name: `Player ${i + 1}`,
+                image: images[i] || `https://source.unsplash.com/100x100/?face&sig=${i}`
+            }));
+
+            function displayPlayers(filteredPlayers) {
+                playerGrid.innerHTML = filteredPlayers.map(player => `
+                    <div class="player-card" onclick="showBackstory(${player.number})">
+                        <img src="${player.image}" alt="${player.name}">
+                        <h2>${player.name}</h2>
+                        <p>Player #${player.number}</p>
+                    </div>
+                `).join("");
+            }
+
+            window.showBackstory = async function(playerNumber) {
+                const player = players.find(p => p.number === playerNumber);
+                if (!player) return;
+                backstoryTitle.innerText = `${player.name} - Player #${player.number}`;
+                backstoryText.innerText = await fetchBackstoryText();
+                backstoryModal.style.display = "block";
+            };
+
+            window.closeBackstory = function() {
+                backstoryModal.style.display = "none";
+            };
+
+            searchInput.addEventListener("input", function () {
+                const query = searchInput.value.toLowerCase();
+                const filteredPlayers = players.filter(player => 
+                    player.name.toLowerCase().includes(query) || 
+                    player.number.toString().includes(query)
+                );
+                displayPlayers(filteredPlayers);
+            });
+
+            displayPlayers(players);
+        });
+    </script>
+</body>
+</html>

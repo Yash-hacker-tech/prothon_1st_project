@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Operations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background: #262626;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            color: rgb(248, 248, 248);
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #333; 
+        }
+
+        input[type="submit"] {
+            background: #171515;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 4px;
+            color: #ffffff;
+            transition: .5s;
+        }
+        input[type="submit"]:hover {
+            color: #24ee2e;
+            box-shadow: 0 0 15px #34b103;
+            text-shadow: 0 0 15px #34b103;
+        }
+
+        .result {
+            margin-top: 20px;
+            color: #ffffff;
+            text-align: left;
+        }
+    </style>
+    <script>
+        function addtask(event) {
+            event.preventDefault();
+            const taskinput = document.getElementById('task');
+            const inputString = taskinput.value.trim();
+
+            if (inputString === "") {
+                alert("Please enter a string.");
+                return;
+            }
+
+           
+            const isPalindrome = checkPalindrome(inputString);
+            const reversedString = reverseString(inputString);
+            const upperCaseString = inputString.toUpperCase();
+            const lowerCaseString = inputString.toLowerCase();
+            const { vowels, consonants } = countVowelsAndConsonants(inputString);
+
+            
+            displayResults(isPalindrome, reversedString, upperCaseString, lowerCaseString, vowels, consonants);
+        }
+
+        function checkPalindrome(str) {
+            const newstr = str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+            let left = 0, right = newstr.length - 1;
+
+            while (left < right) {
+                if (newstr[left] !== newstr[right]) {
+                    return false;
+                }
+                left++;
+                right--;
+            }
+            return true;
+        }
+
+        function reverseString(str) {
+
+            let reversed = "";
+            for (let i = str.length - 1; i >= 0; i--) {
+                reversed += str[i];
+            }
+            return reversed;
+        }
+
+        function countVowelsAndConsonants(str) {
+            const vowelsList = "aeiouAEIOU";
+            let vowels = 0, consonants = 0;
+
+            for (let char of str) {
+                if (char.match(/[a-zA-Z]/)) {
+                    if (vowelsList.includes(char)) {
+                        vowels++;
+                    } else {
+                        consonants++;
+                    }
+                }
+            }
+            return { vowels, consonants };
+        }
+
+        function displayResults(isPalindrome, reversedString, upperCaseString, lowerCaseString, vowels, consonants) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <p><strong>Palindrome:</strong> ${isPalindrome ? 'Yes' : 'No'}</p>
+                <p><strong>Reversed String:</strong> ${reversedString}</p>
+                <p><strong>Uppercase:</strong> ${upperCaseString}</p>
+                <p><strong>Lowercase:</strong> ${lowerCaseString}</p>
+                <p><strong>Vowels Count:</strong> ${vowels}</p>
+                <p><strong>Consonants Count:</strong> ${consonants}</p>
+            `;
+        }
+    </script>
+</head>
+<body>
+
+    <form onsubmit="addtask(event)">
+        <h1>String Operations</h1>
+        <label for="task" style="color: #ffffff;">Enter The String</label>
+        <input type="text" id="task" placeholder="Enter The String">
+        <input type="submit" value="Check String">
+        <div id="result" class="result"></div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,198 @@
+with love
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squid Game Tracker</title>
+    <style>
+        body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.container {
+    padding: 20px;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    justify-content: center;
+}
+
+.participant {
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.alive {
+    background-color: green;
+}
+
+.eliminated {
+    background-color: red;
+}
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px); /* Blur effect */
+    z-index: 9;
+}
+
+#modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    width: 300px;
+    text-align: center;
+}
+#modal-content{
+    color:black;
+}
+#close-modal {
+    margin-top: 10px;
+    cursor: pointer;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Squid Game Tracker</h1>
+        <div class="controls">
+            <input type="text" id="search" placeholder="Search by number">
+            <select id="filter-status">
+                <option value="all">All</option>
+                <option value="Alive">Alive</option>
+                <option value="Eliminated">Eliminated</option>
+            </select>
+            <input type="number" id="count" placeholder="Enter number to eliminate" min="1">
+            <button id="elim">Eliminate</button>
+        </div>
+        <div id="participants" class="grid"></div>
+    </div>
+    <div id="overlay"></div>
+
+    <!-- Modal for displaying participant details -->
+    <div id="modal">
+        <div id="modal-content"></div>
+        <button id="close-modal">Close</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    const participantsContainer = document.getElementById("participants");
+    const searchInput = document.getElementById("search");
+    const filterSelect = document.getElementById("filter-status");
+    const modal = document.getElementById("modal");
+    const modalContent = document.getElementById("modal-content");
+    const closeModal = document.getElementById("close-modal");
+    const overlay = document.getElementById("overlay");
+    let count = document.getElementById("count");
+    let elim = document.getElementById("elim");
+    elim.addEventListener("click",()=>{
+        let playerId = parseInt(count.value);
+        eliminate(playerId);
+    })
+    let participants = [];
+    for (let i = 1; i <= 456; i++) {
+        participants.push({ 
+            id: i, 
+            status: Math.random() < 0.3 ? "Eliminated" : "Alive",
+        });
+    }
+    function eliminate(id){
+        for(let i = 0; i<participants.length; i++){
+            if(participants[i].id === id){
+                if(participants[i].status == "Eliminated"){
+                    alert("the player has already been eliminated");
+                    break;
+                }
+                participants[i].status = "Eliminated";
+                break;
+            }
+        }
+        renderParticipants();
+    }
+    function renderParticipants() {
+        participantsContainer.innerHTML = "";
+
+        for (let i = 0; i < participants.length; i++) {
+            let p = participants[i];
+
+            if (filterSelect.value !== "all" && p.status !== filterSelect.value) continue;
+            if (!p.id.toString().includes(searchInput.value)) continue;
+
+            const div = document.createElement("div");
+            div.classList.add("participant", p.status.toLowerCase());
+            div.innerHTML = #${p.id} <br> Status: ${p.status};
+            participantsContainer.appendChild(div);
+
+            let hoverTimer;
+            div.addEventListener("mouseenter", () => {
+                hoverTimer = setTimeout(() => {
+                    showModal(p);
+                }, 2000); // Show modal after 2 seconds
+            });
+
+            div.addEventListener("mouseleave", () => {
+                clearTimeout(hoverTimer); // Cancel if user moves away
+            });
+        }
+    }
+
+    function showModal(player) {
+        modalContent.innerHTML = `<span> Player ID: ${player.id}</span>
+        <br><span> Status: ${player.status}</span>
+        <br><span> Rounds survived: ${Math.floor(Math.random()*7)}`;
+        modal.style.display = "block";
+        overlay.style.display = "block";
+    }
+
+    closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+        overlay.style.display = "none";
+    });
+
+    overlay.addEventListener("click", () => {
+        modal.style.display = "none";
+        overlay.style.display = "none";
+    });
+
+    searchInput.addEventListener("input", renderParticipants);
+    filterSelect.addEventListener("change", renderParticipants);
+
+    renderParticipants();
+});
+
+    </script>
+</body>
+</html>

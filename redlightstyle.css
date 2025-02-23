@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: 	#1b000c;
+    color: white;
+}
+
+h1
+{
+    font-size:43px;
+    text-align: center;
+    color: #fff;
+    text-shadow: 
+        1px 1px 10px #E84481,
+        2px 2px 15px #E84481,
+        3px 3px 20px #E84481,
+        4px 4px 25px #E84481,
+        5px 5px 30px #E84481;
+}
+
+#game-container {
+    margin: 20px auto;
+    width: 300px;
+}
+
+#doll {
+    font-size: 24px;
+    padding: 10px;
+    background-color: black;
+    box-shadow: 1px 1px 10px #39FF14,2px 2px 15px #39FF14,3px 3px 20px #39FF14,4px 4px 25px #39FF14;
+    color: white;
+    text-shadow: 1px 1px 10px #39FF14,2px 2px 15px #39FF14,3px 3px 20px #39FF14;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+
+#track {
+    position: relative;
+    height: 400px;
+    width: 300px;
+    background: rgb(0, 0, 0);
+    box-shadow:
+        1px 1px 10px #E84481,
+        2px 2px 15px #E84481,
+        3px 3px 20px #E84481,
+        4px 4px 25px #E84481,
+        5px 5px 30px #E84481;
+    margin: 20px auto;
+    border-radius: 10px;
+    border: 3px solid white;
+    overflow: hidden;
+}
+
+#player {
+    position: absolute;
+    bottom: 10px;
+    left: 130px;
+    font-size: 30px;
+    transition: all 0.1s linear;
+}
+
+#finish-line {
+    position: absolute;
+    top: 10px;
+    left: 120px;
+    font-size: 30px;
+}
+
+.obstacle {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: #bc467d;
+    box-shadow: 
+        1px 1px 40px #E84481;
+    border-radius: 10px;
+}
+
+#status {
+    font-size: 20px;
+    margin-top: 10px;
+}

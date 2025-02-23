@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body >
+    <div class="body1" id="myDiv">
+        <div class="header">
+        <header class="header_contemt">
+            <a class="logoa">
+                <img src="Group 1.png" alt="" class="logo-icon">
+                
+            </a>
+            <nav class="nav">
+                <a href="games.html" class="navlink">Games</a>
+                <a href="player.html" class="navlink">Players</a>
+                <a href="squidgamelast.html" class="navlink">Statistics</a>
+                
+                
+            </nav>
+            <button class="Contact-button"><a href="squidgamelast.html" class="navlink">Start Tracking</a></button>
+        
+        <button class="menu-button">
+            <img src="Hamburger.svg" alt="" class="menu-icon">
+        </button>
+        </header>
+    </div>
+    <div class="content">
+                <div class="content-left">
+                    <img src="Vector.svg" alt="" class="squid">
+                    <h2 class="sur">Will You Survive The Game?</h2> 
+                    <p class="surt"> Discover the games, learn the rules and join the players</p>
+                    <div class="button-group">
+                        <button class="Contact-button1" ><a href="games.html" class="navlink">Start Playing</a></button>
+                        
+                    </div>
+                </div>
+                <div class="content-right">
+                          <div class="image-class"><img src="character.png" alt="" ></div>
+                          <div class="slider-container">
+                            <div class="slider">
+                                <div class="slide">
+                                    <img src="img1.jpg" alt="Image 1">
+                                </div>
+                                <div class="slide">
+                                    <img src="img2.jpg" alt="Image 2">
+                                </div>
+                                <div class="slide">
+                                    <img src="img3.jpeg" alt="Image 3">
+                                </div>
+                                <div class="slide">
+                                    <img src="img4.webp" alt="Image 4">
+                                </div>
+                                <div class="slide">
+                                    <img src="img5.webp" alt="Image 5">
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                
+    </div>
+    </div>
+    
+    <div class="company-container">
+        <h2 style="color: white; margin-top: 12px;">Our Previous Players</h2>
+        <div class="hidden">
+            <div class="company-logo">
+                <img src="m1.png" alt="" class="svg-img">
+               
+            </div>
+
+        
+            <div class="company-logo">
+                <img src="m2.png" alt="" class="svg-img">
+                
+            </div>
+        
+
+       
+            <div class="company-logo">
+                <img src="m3.png" alt="" class="svg-img">
+                
+            </div>
+        
+
+       
+            <div class="company-logo">
+                <img src="m4.png" alt="" class="svg-img">
+                
+            </div>
+        </div>
+    </div>
+        
+            <div class="body2">
+                
+                <div class="footer">
+                    <div class="ply"><img src="player.png" alt=""></div>
+                <div class="piggy">
+                   <div><img src="pigb.png" alt="" class="pigimg"></div> 
+                   <div class="container">
+                    
+                    <form id="registrationForm">
+                        <div class="form-group">
+                            <input type="text" id="name" placeholder="Enter your name">
+                            <small class="error-message"></small>
+                        </div>
+            
+                        <div class="form-group">
+                            
+                            <input type="email" id="email" placeholder="Enter your email">
+                            <small class="error-message"></small>
+                        </div>
+            
+                        <div class="form-group">
+                            
+                            <input type="password" id="password" placeholder="Enter your password">
+                            <small class="error-message"></small>
+                        </div>
+            
+                        <div class="form-group">
+                            
+                            <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                            <small class="error-message"></small>
+                        </div>
+            
+                        <button type="submit" class="Contact-button1">Register</button>
+                    </form>
+                </div>
+            
+            
+                </div>
+                <div style="color: aliceblue;" class="front"> <img src="Play.png" alt=""></div>
+            </div>
+               
+          <script>
+          
+            document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("registrationForm");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); 
+
+        let name = document.getElementById("name");
+        let email = document.getElementById("email");
+        let password = document.getElementById("password");
+        let confirmPassword = document.getElementById("confirmPassword");
+
+        let isValid = true; 
+
+        document.querySelectorAll(".error-message").forEach(msg => msg.style.display = "none");
+        document.querySelectorAll("input").forEach(input => input.classList.remove("error"));
+
+        if (name.value.trim() === "") {
+            showError(name, "Name is required");
+            isValid = false;
+        }
+
+        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email.value.trim())) {
+            showError(email, "Enter a valid email");
+            isValid = false;
+        }
+
+        if (password.value.length < 6) {
+            showError(password, "Password must be at least 6 characters");
+            isValid = false;
+        }
+
+        if (confirmPassword.value !== password.value) {
+            showError(confirmPassword, "Passwords do not match");
+            isValid = false;
+        }
+        if (isValid) {
+            alert("Registration Successful!");
+        }
+    });
+
+    function showError(input, message) {
+        input.classList.add("error");
+        let errorMessage = input.nextElementSibling;
+        errorMessage.innerText = message;
+        errorMessage.style.display = "block";
+    }
+});
+          </script>      
+           
+       
+  
+   
+</body>
+</html>

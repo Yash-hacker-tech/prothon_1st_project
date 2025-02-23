@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;400;500;600;700&display=swap');
+
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+body{
+    text-align: center;
+    background-image: url(squid\ game\ 2\ \(1\).png);
+}
+.header{
+    
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+.head img{
+   
+    width: 400px;
+    
+}
+.Contact-button{
+   
+    border: none;
+    margin-top: 13px;
+    border-radius: 0.375rem;
+    background-color: #f7accf;
+    background-image: linear-gradient(147deg, #f7accf 0%, #ff1053 74%);
+    
+    color: #F9F7F7;
+    transform: all 0.1s;
+    padding: 0.95rem 1.75rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.21s;
+}
+@media  screen and (min-width:768px) {
+    .Contact-button{
+        display: flex;
+    }
+}
+.Contact-button:hover{
+    background-color:#F9F7F7;
+    background-image: none;
+    color:#E84481;
+    color:#E84481;
+    transform: scaleX(1.2);
+    box-shadow: 0 0 15px #E84481;
+    text-shadow: 0 0 1px#E84481;
+
+}
+.hero{
+    
+    height: 100%;
+}
+.content{
+    
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    height: 75vh;
+}
+.left{
+    text-align: center;
+    animation: slidefromleft 2s ease forwards;
+    opacity: 0;
+}
+@keyframes slidefromleft {
+    0%{
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateX(0%);
+    }
+    
+}
+.testimonial-container{
+    background-color: var(--background-color);
+    padding: 2rem;
+    margin: 0 auto;
+    max-width: 1280px;
+}
+.testimonial-content{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.testimonial-title{
+    color: white;
+    font-size: 1.875rem;
+    font-weight: bold;
+}
+
+.testimonial-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 2rem;
+}
+
+.testimonial-card{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(171, 163, 163);
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1.2rem;
+    gap: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover{
+    transform: scale(1.05);;
+    box-shadow: 0 4px 8px rbga(0,0,0,0.2);
+    border: 3px solid  #E84481;
+}
+
+.testimonial-avatar img{
+    height: 5rem;
+    width: 5rem;
+}
+
+.testimonial-text{
+    color: #555;
+    font-size: 0.875rem;
+}
+
+.testimonial-name{
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.testimonial-desc{
+    font-size: 0.875rem;
+    color: #777;
+}
+.newsletter-container{
+    background-color: var(--background-color);
+    padding: 2rem;
+    max-width: 1280px;
+    height: 35vh;
+    margin: 0 auto;
+
+}
+h1
+{
+    font-size: 3.5rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: 
+        1px 1px 10px #E84481,
+        2px 2px 15px #E84481,
+        3px 3px 20px #E84481,
+        4px 4px 25px #E84481,
+        5px 5px 30px #E84481;
+}
+h2
+{
+    font-size: 2.5rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: 
+        1px 1px 10px #E84481,
+        2px 2px 15px #E84481,
+        3px 3px 20px #E84481,
+        4px 4px 25px #E84481,
+        5px 5px 30px #E84481;
+}
+.choices
+{
+    margin-bottom: 30px;
+}
+.choices button
+{
+    background-color: black;
+    color: #fff;
+    font-size: 3rem;
+    margin: 0 80px;
+    border : 0;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.choices button:hover
+{
+    background-color:#F9F7F7;
+    background-image: none;
+    color:#E84481;
+    color:#E84481;
+    transform: scaleX(1.2);
+    box-shadow: 0 0 15px #E84481;
+    text-shadow: 0 0 1px#E84481;
+}
+#playerDisplay, #computerDisplay
+{
+    font-size: 2.5rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: 
+        1px 1px 10px #E84481,
+        2px 2px 15px #E84481,
+        3px 3px 20px #E84481;
+}
+#resultDisplay
+{
+    font-size: 4rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: 
+        1px 1px 10px #E84481,
+        2px 2px 15px #E84481,
+        3px 3px 20px #E84481;
+}
+.choices{
+    display: flex;
+    flex-direction: row;
+}

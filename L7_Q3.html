@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background: #262626;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            color: rgb(248, 248, 248);
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #333; 
+        }
+
+        input[type="submit"] {
+            background: #171515;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 4px;
+            color: #ffffff;
+            transition: .5s;
+        }
+        input[type="submit"]:hover {
+            color: #24ee2e;
+            box-shadow: 0 0 15px #34b103;
+            text-shadow: 0 0 15px #34b103;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0;
+            color: #ffffff; 
+        }
+
+        .remove-btn {
+            background: #171515;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .remove-btn:hover {
+            color: #e2140d;
+            box-shadow: 0 0 15px #eb240a;
+            text-shadow: 0 0 15px #d35400;
+        }
+    </style>
+    <script>
+        const tasks = [];
+
+        function addtask(event) {
+            event.preventDefault();
+            let taskinput = document.getElementById('task');
+taskinput.value = taskinput.value.toUpperCase();
+taskinput.value=taskinput.value+taskinput.value.length;
+
+            if (taskinput.value) {
+                tasks.push(taskinput.value);
+                renderTasks();
+                taskinput.value = '';
+            } else {
+                alert("Please enter a task.");
+            }
+            const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `<p style="color: #ffffff;"><strong>Task Count:</strong> ${tasks.length}</p>`;
+        }
+
+        function removeTask(index) {
+            tasks.splice(index, 1); 
+            renderTasks(); 
+        }
+
+        function renderTasks() {
+            const list = document.getElementById("mylist");
+            list.innerHTML = ''; 
+
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                li.innerHTML = `
+                    ${task}
+                    <button class="remove-btn" onclick="removeTask(${index})">Remove</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+        
+    </script>
+</head>
+<body>
+
+    <form onsubmit="addtask(event)">
+        <h1>Students Database</h1>
+        <label for="task" style="color: #ffffff;">Student Info</label>
+        <input type="text" id="task" placeholder="Enter Student To ADD">
+        <input type="submit" value="Submit">
+        <ul id="mylist"></ul>
+        <div id="result" class="result"></div>
+    </form>
+</body>
+</html>
